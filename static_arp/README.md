@@ -14,7 +14,6 @@ is up. A permanent neighbor entry bypasses HA-side ARP resolution entirely.
 ## Configuration
 
 ```yaml
-interface: enu1
 refresh_seconds: 60
 entries:
   - name: esternacitofonocam   # optional, only used in the log
@@ -22,7 +21,12 @@ entries:
     mac: "48:22:54:c3:46:80"
 ```
 
-- `interface` — host LAN interface (find with `ip route get <camera-ip>`).
+The egress interface is **auto-derived per entry** with `ip route get <ip>`
+(a route lookup, so it works even when the camera is offline / ARP is
+INCOMPLETE). No interface needs to be configured — this is robust to interface
+renames, e.g. a USB Ethernet adapter whose name changes across OS updates.
+The interfaces present on the host are logged at startup.
+
 - `entries` — one entry per camera:
   - `name` *(optional)* — label shown in the add-on log for readability.
   - `ip` / `mac` — the pair pinned as a permanent neighbor entry.

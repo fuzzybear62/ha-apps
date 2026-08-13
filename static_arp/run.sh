@@ -1,7 +1,9 @@
 #!/usr/bin/with-contenv bashio
-IF="$(bashio::config 'interface')"
 INTERVAL="$(bashio::config 'refresh_seconds')"
-bashio::log.info "static-arp: interface=${IF} refresh=${INTERVAL}s"
+
+# transparency: which interfaces the host actually has (host_network -> host netns)
+IFACES="$(ip -o link show | awk -F': ' '{print $2}' | cut -d'@' -f1 | grep -v '^lo$' | tr '\n' ' ')"
+bashio::log.info "static-arp: refresh=${INTERVAL}s | host interfaces: ${IFACES}"
 
 # one-time validation: warn on duplicate IPs
 seen=""
@@ -25,6 +27,14 @@ while true; do
     # runtime guard: skip malformed MAC (e.g. YAML edited outside the UI schema)
     if ! echo "${MAC}" | grep -Eiq '^([0-9a-f]{2}:){5}[0-9a-f]{2}$'; then
       bashio::log.warning "invalid MAC '${MAC}' for ${LABEL} — skipped"
+      continue
+    fi
+    # auto-derive the egress interface for this destination. This is a route
+    # lookup (not a neighbor lookup), so it returns dev even when the camera is
+    # offline / ARP is INCOMPLETE. Robust to interface renames (e.g. USB NIC).
+    IF="$(ip route get "${IP}" 2>/dev/null | grep -oE 'dev [^ ]+' | awk '{print $2}' | head -n1)"
+    if [ -z "${IF}" ]; then
+      bashio::log.warning "no route for ${LABEL} — cannot determine interface, skipped"
       continue
     fi
     if ip neigh replace "${IP}" lladdr "${MAC}" dev "${IF}" nud permanent; then
