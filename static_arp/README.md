@@ -27,5 +27,10 @@ entries:
   - `name` *(optional)* — label shown in the add-on log for readability.
   - `ip` / `mac` — the pair pinned as a permanent neighbor entry.
 
+`ip` and `mac` are format-validated by the add-on options schema, so the UI
+rejects a malformed value on save (MAC must be `aa:bb:cc:dd:ee:ff`, IPv4 dotted
+quad). As a second guard, a malformed MAC that reaches the container anyway
+(e.g. YAML edited outside the UI) is skipped with a log warning.
+
 Duplicate `ip` values are reported in the log at startup
 (`duplicate IP … — later entry wins`); the last entry for that IP is applied.

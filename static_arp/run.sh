@@ -22,6 +22,11 @@ while true; do
     else
       LABEL="${IP}"
     fi
+    # runtime guard: skip malformed MAC (e.g. YAML edited outside the UI schema)
+    if ! echo "${MAC}" | grep -Eiq '^([0-9a-f]{2}:){5}[0-9a-f]{2}$'; then
+      bashio::log.warning "invalid MAC '${MAC}' for ${LABEL} — skipped"
+      continue
+    fi
     if ip neigh replace "${IP}" lladdr "${MAC}" dev "${IF}" nud permanent; then
       bashio::log.info "pinned ${LABEL} -> ${MAC} on ${IF}"
     else
