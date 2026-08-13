@@ -1,0 +1,24 @@
+name: Static ARP for cameras
+version: "1.0.0"
+slug: static_arp
+description: Pin camera MACs in host ARP table (repeater broadcast black-hole workaround)
+arch:
+  - aarch64
+startup: services
+boot: auto
+init: false
+host_network: true
+privileged:
+  - NET_ADMIN
+options:
+  interface: enu1
+  refresh_seconds: 60
+  entries:
+    - ip: 192.168.188.51
+      mac: "48:22:54:c3:46:80"
+schema:
+  interface: str
+  refresh_seconds: int(10,3600)
+  entries:
+    - ip: str
+      mac: str
