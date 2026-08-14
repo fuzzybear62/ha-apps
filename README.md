@@ -120,23 +120,28 @@ Assistant never falls back to a (black‑holed) ARP broadcast for that camera.
 
 ## Configuration
 
+Fields are ordered **IP → MAC → NAME** — the same order shown in the add-on's
+Configuration panel and startup log. Keep the entries written in ascending‑IP
+order and the Configuration panel will list them that way (it renders the stored
+order; there is no in‑UI column sort).
+
 ```yaml
 refresh_seconds: 60
 entries:
-  - name: esternacitofonocam   # optional, only used in the log
-    ip: 192.168.188.51
+  - ip: 192.168.188.51
     mac: "48:22:54:c3:46:80"
-  - name: giardino
-    ip: 192.168.188.163
+    name: esternacitofonocam    # optional, only used in the log
+  - ip: 192.168.188.163
     mac: "f0:09:0d:7d:6b:2d"
+    name: giardino
 ```
 
 | Option | Type | Description |
 |--------|------|-------------|
 | `refresh_seconds` | int (10–3600) | How often entries are re‑written (flap resilience). |
-| `entries[].name` | string, optional | Label shown in the add-on log for readability. |
 | `entries[].ip` | IPv4 | Camera IP (validated). |
 | `entries[].mac` | MAC `aa:bb:cc:dd:ee:ff` | Camera MAC (validated, colon format). |
+| `entries[].name` | string, optional | Label shown in the add-on log for readability. |
 
 ## Finding a camera's MAC
 

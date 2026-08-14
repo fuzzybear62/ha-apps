@@ -1,5 +1,5 @@
 name: Static ARP for cameras
-version: "2.1.1"
+version: "2.2.0"
 slug: static_arp
 description: Pin camera MACs in host ARP table (repeater broadcast black-hole workaround)
 arch:
@@ -13,12 +13,12 @@ privileged:
 options:
   refresh_seconds: 60
   entries:
-    - name: esternacitofonocam
-      ip: 192.168.188.51
+    - ip: 192.168.188.51
       mac: "48:22:54:c3:46:80"
+      name: esternacitofonocam
 schema:
   refresh_seconds: int(10,3600)
   entries:
-    - name: str?
-      ip: "match(^((25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])$)"
+    - ip: "match(^((25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])$)"
       mac: "match(^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$)"
+      name: str?

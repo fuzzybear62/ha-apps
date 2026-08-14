@@ -3,6 +3,15 @@
 All notable changes to the **Static ARP for cameras** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.2.0
+
+### Changed
+- **Configuration panel field order** is now **IP → MAC → NAME**, matching the
+  startup log. HA renders each entry's fields in schema-key order, so the schema
+  (and the options example) were reordered accordingly. Note: the panel lists
+  entries in *stored* order — there is no in-UI column sort — so keep them
+  written ascending by IP for an ordered view.
+
 ## 2.1.1
 
 ### Changed
