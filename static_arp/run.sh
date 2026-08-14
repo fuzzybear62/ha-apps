@@ -70,6 +70,9 @@ while true; do
   for i in $(bashio::config 'entries|keys'); do
     IP="$(bashio::config "entries[${i}].ip")"
     MAC="$(bashio::config "entries[${i}].mac")"
+    # pad the IP to a fixed width so the "->" always lines up (last octet gets
+    # 2/1/0 trailing spaces for a 1/2/3-digit octet)
+    IPP="$(printf '%-15s' "${IP}")"
     # optional description, shown after the MAC as "(name)"
     if bashio::config.has_value "entries[${i}].name"; then
       DESC=" ($(bashio::config "entries[${i}].name"))"
@@ -78,7 +81,7 @@ while true; do
     fi
     # runtime guard: skip malformed MAC (e.g. YAML edited outside the UI schema)
     if ! echo "${MAC}" | grep -Eiq '^([0-9a-f]{2}:){5}[0-9a-f]{2}$'; then
-      bashio::log.warning "${IP} -> invalid MAC '${MAC}'${DESC} — skipped"
+      bashio::log.warning "${IPP} -> invalid MAC '${MAC}'${DESC} — skipped"
       continue
     fi
     # auto-derive the egress interface for this destination. This is a route
@@ -86,13 +89,13 @@ while true; do
     # offline / ARP is INCOMPLETE. Robust to interface renames (e.g. USB NIC).
     IF="$(ip route get "${IP}" 2>/dev/null | grep -oE 'dev [^ ]+' | awk '{print $2}' | head -n1)"
     if [ -z "${IF}" ]; then
-      bashio::log.warning "${IP} -> ${MAC}${DESC} — no route, cannot determine interface, skipped"
+      bashio::log.warning "${IPP} -> ${MAC}${DESC} — no route, cannot determine interface, skipped"
       continue
     fi
     if ip neigh replace "${IP}" lladdr "${MAC}" dev "${IF}" nud permanent; then
-      bashio::log.info "pinned ${IP} -> ${MAC}${DESC} on ${IF}"
+      bashio::log.info "pinned ${IPP} -> ${MAC}${DESC} on ${IF}"
     else
-      bashio::log.warning "failed to pin ${IP} -> ${MAC}${DESC} on ${IF}"
+      bashio::log.warning "failed to pin ${IPP} -> ${MAC}${DESC} on ${IF}"
     fi
   done
   sleep "${INTERVAL}"

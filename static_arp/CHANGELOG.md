@@ -3,6 +3,12 @@
 All notable changes to the **Static ARP table** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.3.2
+
+### Changed
+- Log lines pad the IP to a fixed width so the `->` **always lines up**
+  (a 1/2/3-digit last octet gets 2/1/0 trailing spaces).
+
 ## 2.3.1
 
 ### Changed
