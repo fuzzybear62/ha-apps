@@ -15,11 +15,11 @@ https://github.com/fuzzybear62/ha-apps
 
 | Add-on | Description |
 |--------|-------------|
-| **Static ARP for cameras** | Pins camera `IP → MAC` as permanent entries in the host ARP table, to keep IP cameras reachable from Home Assistant across flaky/cascaded Wi‑Fi repeaters. |
+| **Static ARP table** | Pins `IP → MAC` as permanent entries in the host ARP table, to keep IP cameras (or any host) reachable from Home Assistant across flaky/cascaded Wi‑Fi repeaters. |
 
 ---
 
-# Static ARP for cameras
+# Static ARP table
 
 ## Why this exists
 
@@ -111,7 +111,7 @@ Assistant never falls back to a (black‑holed) ARP broadcast for that camera.
 1. **Add the repository** (see the top of this file): Settings → Apps → App
    Store → ⋮ → Repositories → paste the URL → Add.
 2. ⋮ → **Check for updates**. Under **Fuzzybear apps** you will see
-   **Static ARP for cameras**.
+   **Static ARP table**.
 3. Open it → **Install** (the Supervisor builds the image from the Dockerfile).
 4. Open the **Configuration** tab and add your cameras (see below).
 5. **Start** the add-on, then enable **Start on boot** and **Watchdog**.

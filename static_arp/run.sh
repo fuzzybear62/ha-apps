@@ -15,6 +15,29 @@ for i in $(bashio::config 'entries|keys'); do
   seen="${seen} ${IP}"
 done
 
+# normalize stored config to IP order. Add-ons have no "on save" hook, but HA
+# restarts a running add-on when its config is saved, so this runs right after a
+# Save. If the stored entries are not already sorted by IP, rewrite them via the
+# Supervisor API (POST /addons/self/options) so the Configuration panel shows
+# them ordered. Idempotent: on the next start they are already sorted -> no-op.
+SORT_JQ='sort_by(.ip | split(".") | map(tonumber))'
+if [ -f /data/options.json ] && command -v jq >/dev/null 2>&1; then
+  CUR="$(jq -c '.entries' /data/options.json 2>/dev/null)"
+  NEW="$(jq -c ".entries | ${SORT_JQ}" /data/options.json 2>/dev/null)"
+  if [ -n "${NEW}" ] && [ "${CUR}" != "${NEW}" ]; then
+    PAYLOAD="$(jq -c "{options: {refresh_seconds: .refresh_seconds, entries: (.entries | ${SORT_JQ})}}" /data/options.json)"
+    if curl -fsS -X POST \
+         -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+         -H "Content-Type: application/json" \
+         -d "${PAYLOAD}" \
+         http://supervisor/addons/self/options >/dev/null 2>&1; then
+      bashio::log.info "stored config normalized to IP order"
+    else
+      bashio::log.warning "could not persist IP-sorted config (log view is still sorted)"
+    fi
+  fi
+fi
+
 # startup inventory: print the configured cameras sorted by IP. The
 # Configuration UI has no sortable columns, so this gives a readable, ordered
 # overview in the Log. We prefix each line with a zero-padded numeric IP key

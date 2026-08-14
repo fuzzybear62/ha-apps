@@ -1,7 +1,21 @@
 # Changelog
 
-All notable changes to the **Static ARP for cameras** add-on are documented here.
+All notable changes to the **Static ARP table** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
+
+## 2.3.0
+
+### Changed
+- **Renamed** the add-on to **Static ARP table** (the slug `static_arp` is
+  unchanged, so existing configuration is preserved).
+
+### Added
+- **Config auto-sort by IP.** Add-ons have no "on save" hook, but HA restarts a
+  running add-on when its config is saved, so on start the add-on normalizes the
+  stored entries to IP order via the Supervisor API
+  (`POST /addons/self/options`). After a Save the Configuration panel shows the
+  entries sorted by IP. Idempotent — already-sorted config is left untouched.
+  Requires `hassio_api: true` (added).
 
 ## 2.2.0
 

@@ -1,13 +1,14 @@
-name: Static ARP for cameras
-version: "2.2.0"
+name: Static ARP table
+version: "2.3.0"
 slug: static_arp
-description: Pin camera MACs in host ARP table (repeater broadcast black-hole workaround)
+description: Pin static ARP entries in the host table (repeater broadcast black-hole workaround)
 arch:
   - aarch64
 startup: services
 boot: auto
 init: false
 host_network: true
+hassio_api: true
 privileged:
   - NET_ADMIN
 options:

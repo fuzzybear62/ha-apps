@@ -1,4 +1,4 @@
-# Static ARP for cameras
+# Static ARP table
 
 Pins camera `IP -> MAC` entries as **permanent** in the Home Assistant host ARP
 table. Runs host-networked with `NET_ADMIN` and re-arms every `refresh_seconds`,
@@ -16,10 +16,18 @@ is up. A permanent neighbor entry bypasses HA-side ARP resolution entirely.
 ```yaml
 refresh_seconds: 60
 entries:
-  - name: esternacitofonocam   # optional, only used in the log
-    ip: 192.168.188.51
+  - ip: 192.168.188.51
     mac: "48:22:54:c3:46:80"
+    name: esternacitofonocam   # optional, only used in the log
 ```
+
+Fields are shown in the Configuration panel in **IP → MAC → NAME** order
+(schema-key order). After you **Save**, the add-on rewrites the stored `entries`
+**sorted by IP**: there is no add-on "on save" hook, but HA restarts the add-on
+on save, and on start it normalizes the config to IP order via the Supervisor
+API (`POST /addons/self/options`). So the next time you open the panel the
+entries are listed by ascending IP. The startup log prints the same
+IP·MAC·NAME table, always sorted by IP.
 
 The egress interface is **auto-derived per entry** with `ip route get <ip>`
 (a route lookup, so it works even when the camera is offline / ARP is
