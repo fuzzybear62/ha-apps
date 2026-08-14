@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python (helper scripts)
+__pycache__/
+*.pyc
+.venv/
+
+# Logs / scratch
+*.log
