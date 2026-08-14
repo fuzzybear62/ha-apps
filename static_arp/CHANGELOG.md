@@ -3,6 +3,13 @@
 All notable changes to the **Static ARP table** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.3.3
+
+### Fixed
+- Regenerated `logo.png` with the new name (**Static ARP table**). The old logo
+  had "for cameras" rendered into the image, so the add-on page still showed the
+  old name after updating.
+
 ## 2.3.2
 
 ### Changed
