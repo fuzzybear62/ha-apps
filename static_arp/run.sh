@@ -15,9 +15,11 @@ for i in $(bashio::config 'entries|keys'); do
   seen="${seen} ${IP}"
 done
 
-# startup inventory: print the configured cameras sorted by IP (numeric,
-# per-octet). The Configuration UI has no sortable columns, so this gives a
-# readable, ordered overview in the Log.
+# startup inventory: print the configured cameras sorted by IP. The
+# Configuration UI has no sortable columns, so this gives a readable, ordered
+# overview in the Log. We prefix each line with a zero-padded numeric IP key
+# and plain-sort on it, so ordering does not depend on busybox `sort -n`
+# handling a mixed last field.
 INV=""
 for i in $(bashio::config 'entries|keys'); do
   IP="$(bashio::config "entries[${i}].ip")"
@@ -27,13 +29,18 @@ for i in $(bashio::config 'entries|keys'); do
   else
     NAME="-"
   fi
-  INV="${INV}${IP}|${NAME}|${MAC}"$'\n'
+  IFS=. read -r o1 o2 o3 o4 <<EOF
+${IP}
+EOF
+  KEY="$(printf '%03d%03d%03d%03d' "${o1:-0}" "${o2:-0}" "${o3:-0}" "${o4:-0}")"
+  INV="${INV}${KEY}|${IP}|${NAME}|${MAC}"$'\n'
 done
 bashio::log.info "configured cameras (sorted by IP):"
-printf '%s' "${INV}" | sort -t. -k1,1n -k2,2n -k3,3n -k4,4n | \
-  while IFS='|' read -r IP NAME MAC; do
+bashio::log.info "  $(printf '%-15s  %-17s  %s' 'IP' 'MAC' 'NAME')"
+printf '%s' "${INV}" | sort | \
+  while IFS='|' read -r KEY IP NAME MAC; do
     [ -z "${IP}" ] && continue
-    bashio::log.info "  $(printf '%-15s  %-24s  %s' "${IP}" "${NAME}" "${MAC}")"
+    bashio::log.info "  $(printf '%-15s  %-17s  %s' "${IP}" "${MAC}" "${NAME}")"
   done
 
 while true; do

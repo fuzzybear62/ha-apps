@@ -3,13 +3,25 @@
 All notable changes to the **Static ARP for cameras** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.1.1
+
+### Changed
+- Startup inventory is now an aligned **`IP · MAC · NAME`** table with a header
+  row — column order mirrors the add-on's purpose (the IP we reach, the MAC we
+  pin, then the label).
+
+### Fixed
+- Inventory now sorts **reliably by IP**. The previous `sort -t. … -k4,4n`
+  mis-ordered on busybox because the last field mixed the octet with `name|mac`;
+  entries are now prefixed with a zero-padded numeric IP key and plain-sorted.
+
 ## 2.1.0
 
 ### Added
 - Startup inventory in the log: the configured cameras are printed **sorted by
-  IP** (numeric, per-octet) as an aligned `IP / name / MAC` table. The
-  Configuration UI has no sortable columns, so this gives a readable, ordered
-  overview without changing how entries are stored.
+  IP** as an aligned table. The Configuration UI has no sortable columns, so
+  this gives a readable, ordered overview without changing how entries are
+  stored.
 
 ## 2.0.0
 

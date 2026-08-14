@@ -89,9 +89,11 @@ Assistant never falls back to a (black‑holed) ARP broadcast for that camera.
   rejects a malformed value on save); a malformed MAC that reaches the container
   anyway is skipped with a log warning. Duplicate IPs are reported at startup.
 - **Startup inventory** — the configured cameras are printed to the **Log** at
-  startup **sorted by IP** (numeric, per‑octet) as an aligned `IP / name / MAC`
-  table. The Configuration tab is a form list with no sortable columns, so this
-  is the readable, ordered overview; the stored order is unchanged.
+  startup **sorted by IP** as an aligned **`IP · MAC · NAME`** table with a
+  header row (column order mirrors the add-on's purpose: the IP we reach, the
+  MAC we pin, then the label). The Configuration tab is a form list with no
+  sortable columns, so this is the readable, ordered overview; the stored order
+  is unchanged.
 
 ## Requirements & compatibility
 
