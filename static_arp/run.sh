@@ -38,7 +38,7 @@ if [ -f /data/options.json ] && command -v jq >/dev/null 2>&1; then
   fi
 fi
 
-# startup inventory: print the configured cameras sorted by IP. The
+# startup inventory: print the configured entries sorted by IP. The
 # Configuration UI has no sortable columns, so this gives a readable, ordered
 # overview in the Log. We prefix each line with a zero-padded numeric IP key
 # and plain-sort on it, so ordering does not depend on busybox `sort -n`
@@ -58,7 +58,7 @@ EOF
   KEY="$(printf '%03d%03d%03d%03d' "${o1:-0}" "${o2:-0}" "${o3:-0}" "${o4:-0}")"
   INV="${INV}${KEY}|${IP}|${NAME}|${MAC}"$'\n'
 done
-bashio::log.info "configured cameras (sorted by IP):"
+bashio::log.info "configured entries (sorted by IP):"
 bashio::log.info "  $(printf '%-15s  %-17s  %s' 'IP' 'MAC' 'NAME')"
 printf '%s' "${INV}" | sort | \
   while IFS='|' read -r KEY IP NAME MAC; do

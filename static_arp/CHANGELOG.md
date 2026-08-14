@@ -3,6 +3,12 @@
 All notable changes to the **Static ARP table** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.3.4
+
+### Changed
+- Inventory log header now reads **"configured entries (sorted by IP)"** — the
+  add-on is not camera-specific.
+
 ## 2.3.3
 
 ### Fixed
