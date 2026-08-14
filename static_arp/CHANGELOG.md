@@ -3,6 +3,14 @@
 All notable changes to the **Static ARP for cameras** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.1.0
+
+### Added
+- Startup inventory in the log: the configured cameras are printed **sorted by
+  IP** (numeric, per-octet) as an aligned `IP / name / MAC` table. The
+  Configuration UI has no sortable columns, so this gives a readable, ordered
+  overview without changing how entries are stored.
+
 ## 2.0.0
 
 ### Changed

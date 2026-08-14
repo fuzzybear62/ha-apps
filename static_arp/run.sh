@@ -15,6 +15,27 @@ for i in $(bashio::config 'entries|keys'); do
   seen="${seen} ${IP}"
 done
 
+# startup inventory: print the configured cameras sorted by IP (numeric,
+# per-octet). The Configuration UI has no sortable columns, so this gives a
+# readable, ordered overview in the Log.
+INV=""
+for i in $(bashio::config 'entries|keys'); do
+  IP="$(bashio::config "entries[${i}].ip")"
+  MAC="$(bashio::config "entries[${i}].mac")"
+  if bashio::config.has_value "entries[${i}].name"; then
+    NAME="$(bashio::config "entries[${i}].name")"
+  else
+    NAME="-"
+  fi
+  INV="${INV}${IP}|${NAME}|${MAC}"$'\n'
+done
+bashio::log.info "configured cameras (sorted by IP):"
+printf '%s' "${INV}" | sort -t. -k1,1n -k2,2n -k3,3n -k4,4n | \
+  while IFS='|' read -r IP NAME MAC; do
+    [ -z "${IP}" ] && continue
+    bashio::log.info "  $(printf '%-15s  %-24s  %s' "${IP}" "${NAME}" "${MAC}")"
+  done
+
 while true; do
   for i in $(bashio::config 'entries|keys'); do
     IP="$(bashio::config "entries[${i}].ip")"

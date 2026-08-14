@@ -88,6 +88,10 @@ Assistant never falls back to a (black‑holed) ARP broadcast for that camera.
 - **Validation** — `ip`/`mac` are format‑checked by the options schema (the UI
   rejects a malformed value on save); a malformed MAC that reaches the container
   anyway is skipped with a log warning. Duplicate IPs are reported at startup.
+- **Startup inventory** — the configured cameras are printed to the **Log** at
+  startup **sorted by IP** (numeric, per‑octet) as an aligned `IP / name / MAC`
+  table. The Configuration tab is a form list with no sortable columns, so this
+  is the readable, ordered overview; the stored order is unchanged.
 
 ## Requirements & compatibility
 
