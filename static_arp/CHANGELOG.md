@@ -3,6 +3,13 @@
 All notable changes to the **Static ARP table** add-on are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 2.3.1
+
+### Changed
+- Log lines are now **IP-led**: `pinned <ip> -> <mac> (<name>) on <iface>`
+  (and the matching warnings), consistent with the startup table and the
+  Configuration panel field order.
+
 ## 2.3.0
 
 ### Changed

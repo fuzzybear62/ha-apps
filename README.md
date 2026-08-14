@@ -116,7 +116,7 @@ Assistant never falls back to a (black‑holed) ARP broadcast for that camera.
 4. Open the **Configuration** tab and add your cameras (see below).
 5. **Start** the add-on, then enable **Start on boot** and **Watchdog**.
 6. Open the **Log** tab and confirm lines like
-   `pinned esternacitofonocam (192.168.188.51) -> 48:22:54:c3:46:80 on enu1`.
+   `pinned 192.168.188.51 -> 48:22:54:c3:46:80 (esternacitofonocam) on enu1`.
 
 ## Configuration
 

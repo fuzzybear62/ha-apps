@@ -1,5 +1,5 @@
 name: Static ARP table
-version: "2.3.0"
+version: "2.3.1"
 slug: static_arp
 description: Pin static ARP entries in the host table (repeater broadcast black-hole workaround)
 arch:
